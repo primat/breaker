@@ -35,21 +35,22 @@
 
         /**
          *
-         * @param $scope
+         * @param scope
          */
-        this.trigger = function ($scope) {
-            $scope = $scope || $rootScope;
+        function trigger (scope) {
 
-            $scope.$broadcast('breakpoint', {
-                width: $window.innerWidth,
-                height: $window.innerHeight
+            scope.$broadcast('breakpoint', {
+                width: $window.innerWidth
             });
-        };
+        }
 
         /**
          *
+         * @param scope The scope that the event is broadcast from
          */
-        this.bind = function () {
+        this.bind = function (scope) {
+
+            scope = scope || $rootScope;
 
             if (!bound) {
 
@@ -60,32 +61,30 @@
                             if (resized) {
                                 resized = false;
                                 $interval.cancel(timer);
-                                breaker.trigger();
+                                trigger(scope);
                             }
                         }, breaker.throttle);
                     }
 
                     resized = true;
-
                 });
 
                 bound = true;
-
                 $w.triggerHandler('resize');
-
             }
 
         };
 
-        // Unbind window resize event
+        // Unbind the window resize event
         this.unbind = function () {
+
             if (bound) {
                 $w.off('resize');
                 bound = false;
             }
         };
 
-        // bind to window resize event when service created
+        // If configured to do so, bind the resize event to $rootScope immediately
         if (breaker.initBind) {
             breaker.bind();
         }
@@ -103,10 +102,8 @@
         this.initBind = 1;
 
         this.$get = ['$rootScope', '$window', '$interval', breakpointServiceObject];
-
     }
 
-    angular.module('breaker', [])
-        .provider('breakpoint', breakpointProvider);
+    angular.module('breaker', []).provider('breakpoint', breakpointProvider);
 
 })(window, window.angular);

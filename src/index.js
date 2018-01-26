@@ -41,7 +41,6 @@
 
             scope.$broadcast('breakpoint', {
                 width: $window.innerWidth
-                //height: $window.innerHeight
             });
         }
 
