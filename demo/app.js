@@ -2,8 +2,9 @@ var app = angular.module('app', ['breaker']);
 
 app.config(['breakpointProvider', function (breakpointProvider) {
 
-    breakpointProvider.throttle = 100;
+    breakpointProvider.debounce = 100;
     breakpointProvider.initBind = true;
+    //breakpointProvider.initBreakpoints = [500, 800, 1000];
 }]);
 
 
@@ -16,11 +17,11 @@ app.directive('breakpointTest', [function () {
             var self = this;
 
             // Register the breakpoint event for this scope
-            //breakpoint.bind($scope);
+            breakpoint.addBreakpoints([500, 800, 1000], $scope);
 
             // Listen for breakpoint events
             $scope.$on('breakpoint', function (data, $event) {
-                $scope.size = $event;
+                $scope.point = $event.point;
             });
 
         }]
@@ -37,7 +38,7 @@ app.directive('breakpointTest2', [function () {
         bindToController: true,
         template: '<div>\n' +
         '            <div>\n' +
-        '                Viewport width: {{ ctrl.size.width }}\n' +
+        '                Viewport width: {{ point }}\n' +
         '            </div>\n' +
         '          </div>',
         controller: ['$scope', 'breakpoint', function ($scope, breakpoint) {
@@ -45,11 +46,12 @@ app.directive('breakpointTest2', [function () {
             var self = this;
 
             // Register the breakpoint event for this scope
-            //breakpoint.bind($scope);
+            breakpoint.addBreakpoints([600, 700, 900], $scope);
+
 
             // Listen for breakpoint events
             $scope.$on('breakpoint', function (data, $event) {
-                self.size = $event;
+                $scope.point = $event.point;
             });
 
         }]

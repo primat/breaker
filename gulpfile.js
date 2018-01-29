@@ -40,7 +40,7 @@ gulp.task('app-js:min', function () {
 gulp.task('watch', function () {
     gulp.watch(['./demo/*.html'], ['html']);
     gulp.watch(['./demo/*.js'], ['js']);
-    gulp.watch(['./src/**/*.js'], ['app-js:min']);
+    gulp.watch(['./src/**/*.js'], ['app-js', 'app-js:min']);
 });
 
 
