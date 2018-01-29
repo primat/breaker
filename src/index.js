@@ -90,6 +90,7 @@
                     for (i = points.length-1; i >= 0; --i) {
                         if (previousWidth < points[i] && currentWidth >= points[i]) {
                             result.push([(points[i+1] || Infinity), scopes[scopeId].scope]);
+                            break;
                         }
                     }
                 }
@@ -102,11 +103,11 @@
                     for (i = 0; i < points.length; ++i) {
                         if (previousWidth >= points[i] && currentWidth < points[i]) {
                             result.push([points[i], scopes[scopeId].scope]);
+                            break;
                         }
                     }
                 }
             }
-            // else {} // currentWidth === previousWidth
 
             return result;
         };
@@ -194,8 +195,6 @@
 
                             var currentWidth = $window.innerWidth;
                             var bp = breakpoints.findBreakpoint(currentWidth, previousWidth);
-
-                            console.log(previousWidth + " " + currentWidth);
 
                             for (var i = 0; i < bp.length; ++i) {
                                 trigger(bp[i][1], bp[i][0]);
